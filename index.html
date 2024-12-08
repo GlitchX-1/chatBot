@@ -1,56 +1,120 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="yenilikci">
-    <meta name="url" content="https://github.com/yenilikci/JavaScript-Form-Validator">
-    <title>Form Validator</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
+    <title>Chat Bot AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .chat-box {
+            border: 1px solid #ddd;
+            padding: 20px;
+            height: 400px;
+            overflow-y: scroll;
+            margin-bottom: 20px;
+        }
+        .chat-box .message {
+            margin-bottom: 15px;
+        }
+        .chat-box .message.user {
+            text-align: right;
+        }
+        .chat-box .message.bot {
+            text-align: left;
+        }
+        .chat-box .message .text {
+            display: inline-block;
+            padding: 10px 15px;
+            border-radius: 20px;
+            max-width: 70%;
+        }
+        .chat-box .message.user .text {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .chat-box .message.bot .text {
+            background-color: #f1f1f1;
+            color: #333;
+        }
+        .input-box {
+            display: flex;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+        .input-box input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            margin-right: 10px;
+        }
+        .input-box button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .input-box button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-    <div class="container my-5 d-flex justify-content-center">
-        <div class="col-sm-5">
-            <div class="card">
-                <div class="card-header text-center text-muted"><b>Create User</b></div>
-                <div class="card-body">
-                    <form id="form" novalidate>
-                    <div class="form-group">
-                        <label for="username">Username:</label>
-                        <input type="text" class="form-control" id="username" placeholder="Enter your username">
-                        <div></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="email" class="form-control" id="email" placeholder="Enter your email address">
-                        <div></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="password">Password:</label>
-                        <input type="password" class="form-control" id="password" placeholder="Enter your password">
-                        <div></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="repassword">Password Again:</label>
-                        <input type="password" class="form-control" id="repassword" placeholder="Re-enter your password">
-                        <div></div>
-                    </div>
-
-                    <button type="submit" class="btn btn-dark btn-block">Sign Up</button>
-
-                    </form>
-                </div>
-                <div class="card-footer text-muted text-center"></div>
+    <div class="header">
+        <h1>Chat Bot AI</h1>
+    </div>
+    <div class="container">
+        <div class="chat-box" id="chat-box">
+            <div class="message bot">
+                <div class="text">Hello! How can I assist you today?</div>
             </div>
         </div>
+        <div class="input-box">
+            <input type="text" id="user-input" placeholder="Type your message here...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" ></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <script src="script.js"></script>
+
+    <script>
+        function sendMessage() {
+            var userInput = document.getElementById('user-input').value;
+            if (userInput.trim() === '') return;
+
+            var chatBox = document.getElementById('chat-box');
+
+            var userMessage = document.createElement('div');
+            userMessage.className = 'message user';
+            userMessage.innerHTML = '<div class="text">' + userInput + '</div>';
+            chatBox.appendChild(userMessage);
+
+            document.getElementById('user-input').value = '';
+
+            var botMessage = document.createElement('div');
+            botMessage.className = 'message bot';
+            botMessage.innerHTML = '<div class="text">I am a bot, and I received your message: ' + userInput + '</div>';
+            chatBox.appendChild(botMessage);
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
 </body>
 </html>
