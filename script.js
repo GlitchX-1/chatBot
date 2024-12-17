@@ -1,67 +1,62 @@
-const form = document.getElementById('form');
-const username = document.getElementById('username'); 
-const email = document.getElementById('email'); 
-const password = document.getElementById('password'); 
-const repassword = document.getElementById('repassword'); 
+document.getElementById('userForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    let isValid = true;
 
-//input
-function error(input,message){
-    input.className = 'form-control is-invalid'; 
-    const div = input.nextElementSibling; 
-    div.innerText = message; 
-    div.className = 'invalid-feedback'; 
-}
+    const username = document.getElementById('username');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
 
-//input 
-function success(input){
-    input.className = 'form-control is-valid' 
-}
-
-//mail 
-function validateEmail(email) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase()); 
-}
-
-
-function checkLength(input,min,max){
-    if(input.value.length < min){ 
-        error(input,`${input.id} ${min} Must be a character`);
-    }else if(input.value.length > max){
-        error(input,`${input.id}  ${max} Must be a character`);
-    }else{ 
-        success(input);
+    if (username.value.trim() === '') {
+        username.classList.add('is-invalid');
+        isValid = false;
+    } else {
+        username.classList.remove('is-invalid');
     }
-}
 
-//parola eşleşme kontrolü
-function checkPasswords(pass1,pass2){
-    if(pass1.value !== pass2.value){
-        error(pass2,'Password don not match');
-    }else{
-        success(pass2);
+    if (email.value.trim() === '' || !validateEmail(email.value)) {
+        email.classList.add('is-invalid');
+        isValid = false;
+    } else {
+        email.classList.remove('is-invalid');
     }
-}
 
-form.addEventListener('submit',function(e){
-    e.preventDefault();
-    if(username.value === ''){  
-        error(username,'The username field cannot be left blank'); 
-    }else{ 
-        checkLength(username,6,12);   
-    }if(email.value === ''){ 
-        error(email,'The email field cannot be blank');
-    }else if(!validateEmail(email.value)){ 
-        error(email,'Enter your email address in the appropriate format');
-    }else{
-        success(email);
-    }if(password.value === ''){ 
-       error(password,'The passsword field cannot be left blank');
-    }else{
-        checkLength(password,6,30);
-    }if(repassword.value === ''){ 
-        error(repassword,'The password re-enter field cannot be left blank');
-    }else{
-        checkPasswords(password,repassword);
+    if (password.value.trim() === '') {
+        password.classList.add('is-invalid');
+        isValid = false;
+    } else {
+        password.classList.remove('is-invalid');
+    }
+
+    if (isValid) {
+        addUser(username.value, email.value);
+        username.value = '';
+        email.value = '';
+        password.value = '';
     }
 });
+
+function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+}
+
+function addUser(username, email) {
+    const userList = document.getElementById('userList');
+    const rowCount = userList.rows.length;
+    const row = userList.insertRow(rowCount);
+
+    const cell1 = row.insertCell(0);
+    const cell2 = row.insertCell(1);
+    const cell3 = row.insertCell(2);
+    const cell4 = row.insertCell(3);
+
+    cell1.innerHTML = rowCount + 1;
+    cell2.innerHTML = username;
+    cell3.innerHTML = email;
+    cell4.innerHTML = '<button class="btn btn-danger btn-sm" onclick="deleteUser(this)">Delete</button>';
+}
+
+function deleteUser(button) {
+    const row = button.parentNode.parentNode;
+    row.parentNode.removeChild(row);
+}
